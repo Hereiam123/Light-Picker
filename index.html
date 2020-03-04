@@ -7,10 +7,45 @@
       #litepicker {
         font-size: 16px;
       }
+      @media screen and (max-width: 500px) {
+        .litepicker {
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+        }
+      }
+      .button-cancel {
+        display: none;
+      }
+      .preview-date-range {
+        display: none;
+      }
+      .litepicker .container__months {
+        flex-wrap: nowrap !important;
+        width: initial !important;
+      }
+      @media screen and (max-width: 500px) {
+        .litepicker .container__months {
+          flex-wrap: wrap !important;
+          width: 100% !important;
+          height: 100%;
+        }
+      }
+      .litepicker .container__footer {
+        background-color: white !important;
+        margin: 0 !important;
+        box-shadow: 0px 4px 5px #ddd !important;
+      }
     </style>
   </head>
   <body>
-    <input type="text" id="litepicker" readonly />
+    <input
+      type="text"
+      id="litepicker"
+      readonly
+      placeholder="Click to Choose Hotel Dates"
+      aria-label="Click to Open Hotel Dates Calendar Range Picker"
+    />
     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/js/main.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -27,7 +62,27 @@
         autoApply: false,
         selectForward: true,
         minDays: 1,
+        onShow: function() {
+          $("#litepicker").attr("tabindex", "-1");
+        },
+        onHide: function() {
+          $("#litepicker").removeAttr("tabindex");
+          $("#litepicker").focus();
+        },
+        onSelect: function() {
+          $("#litepicker").removeAttr("tabindex");
+          $("#litepicker").focus();
+        },
         onRender: function() {
+          $(".container__months").append(
+            "<div><button class='close'> &#10005;</button></div>"
+          );
+          $(".container__months")
+            .find(".close")
+            .on("click", function() {
+              $(".button-cancel").click();
+            });
+          $(".month-item-weekdays-row").attr("aria-hidden", "true");
           $(".month-item a").each(function() {
             var monthName = $(this)
               .closest(".month-item")
@@ -45,11 +100,19 @@
             } else {
               startEndAriaText = "checkout out date";
             }
-            $(this).attr(
-              "aria-label",
-              "Click to select " + startEndAriaText + " of " + monthYearString
-            );
-            $(this).data("at-select-date", monthYearString);
+            if (!$(this).is(".button-previous-month, .button-next-month")) {
+              $(this).attr(
+                "aria-label",
+                "Click to select " + startEndAriaText + " of " + monthYearString
+              );
+              $(this).data("at-select-date", monthYearString);
+            } else {
+              if ($(this).is(".button-previous-month")) {
+                $(this).attr("aria-label", "Click to go to previous month");
+              } else {
+                $(this).attr("aria-label", "Click to go to next month");
+              }
+            }
             $(this).attr("role", "button");
             $(this).attr("tabindex", "0");
             $(this).removeAttr("href");
@@ -58,23 +121,25 @@
                 $(this)[0].click();
               }
             });
-            $(this).on("click", function() {
-              if ($(".is-end-date").length == 0) {
-                $(".is-start-date").focus();
-              } else {
-                var startDate = $(".is-start-date").data("at-select-date");
-                var endDate = $(".is-end-date").data("at-select-date");
-                $(".button-apply").attr(
-                  "aria-label",
-                  "Click to select dates of " +
-                    startDate +
-                    " to " +
-                    endDate +
-                    " for checkin and checkout"
-                );
-                $(".button-apply").focus();
-              }
-            });
+            $(this)
+              .not(".button-previous-month, .button-next-month")
+              .on("click", function() {
+                if ($(".is-end-date").length == 0) {
+                  $(".is-start-date").focus();
+                } else {
+                  var startDate = $(".is-start-date").data("at-select-date");
+                  var endDate = $(".is-end-date").data("at-select-date");
+                  $(".button-apply").attr(
+                    "aria-label",
+                    "Click to select dates of " +
+                      startDate +
+                      " to " +
+                      endDate +
+                      " for checkin and checkout"
+                  );
+                  $(".button-apply").focus();
+                }
+              });
           });
         }
       });
