@@ -135,7 +135,10 @@
               .not(".button-previous-month, .button-next-month")
               .on("click", function() {
                 if ($(".is-end-date").length == 0) {
-                  $(".is-start-date").focus();
+                  $(".day-item")
+                    .not(".is-locked")
+                    .first()
+                    .focus();
                 } else {
                   var startDate = $(".is-start-date").data("at-select-date");
                   var endDate = $(".is-end-date").data("at-select-date");
