@@ -44,7 +44,7 @@
       id="litepicker"
       readonly
       placeholder="Click to Choose Hotel Dates"
-      aria-label="Click to Open Hotel Dates Calendar Range Picker"
+      aria-label="Click to open hotel dates calendar range picker."
     />
     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/js/main.js"></script>
     <script
@@ -63,14 +63,19 @@
         selectForward: true,
         minDays: 1,
         onShow: function() {
-          $("#litepicker").attr("tabindex", "-1");
+          //$("#litepicker").attr("tabindex", "-1");
+          $("#litepicker").attr(
+            "aria-label",
+            "Hotel dates calendar range picker open."
+          );
+          $(".day-item.is-today").focus();
         },
         onHide: function() {
-          $("#litepicker").removeAttr("tabindex");
-          $("#litepicker").focus();
-        },
-        onSelect: function() {
-          $("#litepicker").removeAttr("tabindex");
+          //$("#litepicker").removeAttr("tabindex");
+          $("#litepicker").attr(
+            "aria-label",
+            "Click to open hotel dates calendar range picker."
+          );
           $("#litepicker").focus();
         },
         onRender: function() {
@@ -113,8 +118,12 @@
                 $(this).attr("aria-label", "Click to go to next month");
               }
             }
-            $(this).attr("role", "button");
-            $(this).attr("tabindex", "0");
+            if (!$(this).is(".is-locked")) {
+              $(this).attr("role", "button");
+              $(this).attr("tabindex", "0");
+            } else {
+              $(this).attr("tabindex", "-1");
+            }
             $(this).removeAttr("href");
             $(this).on("keyup", function(e) {
               if (e.keyCode === 13) {
@@ -146,6 +155,11 @@
       $("#litepicker").on("keyup", function(e) {
         if (e.keyCode === 13) {
           picker.show();
+        }
+      });
+      $(".litepicker").on("focusout", function(e) {
+        if (!$(this).has(e.target)) {
+          picker.hide();
         }
       });
     </script>
