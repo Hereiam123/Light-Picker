@@ -123,6 +123,7 @@
               $(this).attr("tabindex", "0");
             } else {
               $(this).attr("tabindex", "-1");
+              $(this).attr("aria-hidden", "true");
             }
             $(this).removeAttr("href");
             $(this).on("keyup", function(e) {
