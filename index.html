@@ -3,6 +3,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      #litepicker {
+        font-size: 16px;
+      }
+    </style>
   </head>
   <body>
     <input type="text" id="litepicker" readonly />
@@ -21,6 +26,7 @@
         mobileFriendly: false,
         autoApply: false,
         selectForward: true,
+        minDays: 1,
         onRender: function() {
           $(".month-item a").each(function() {
             var monthName = $(this)
@@ -34,10 +40,10 @@
             var monthYearString =
               monthName + " " + $(this).text() + " " + monthYear;
             var startEndAriaText;
-            if ($(".is-end-date").length == 0) {
-              startEndAriaText = "start date";
+            if ($(".is-start-date.is-locked").length == 0) {
+              startEndAriaText = "check in date";
             } else {
-              startEndAriaText = "end date";
+              startEndAriaText = "checkout out date";
             }
             $(this).attr(
               "aria-label",
@@ -60,7 +66,11 @@
                 var endDate = $(".is-end-date").data("at-select-date");
                 $(".button-apply").attr(
                   "aria-label",
-                  "Click to select dates of " + startDate + " to " + endDate
+                  "Click to select dates of " +
+                    startDate +
+                    " to " +
+                    endDate +
+                    " for checkin and checkout"
                 );
                 $(".button-apply").focus();
               }
