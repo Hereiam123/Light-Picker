@@ -5,7 +5,7 @@
     <title>Document</title>
   </head>
   <body>
-    <input type="text" id="litepicker" />
+    <input type="text" id="litepicker" readonly />
     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/js/main.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -20,6 +20,7 @@
         minDate: Date.now(),
         mobileFriendly: false,
         autoApply: false,
+        selectForward: true,
         onRender: function() {
           $(".month-item a").each(function() {
             var monthName = $(this)
@@ -32,7 +33,16 @@
               .html();
             var monthYearString =
               monthName + " " + $(this).text() + " " + monthYear;
-            $(this).attr("aria-label", "Click to select " + monthYearString);
+            var startEndAriaText;
+            if ($(".is-end-date").length == 0) {
+              startEndAriaText = "start date";
+            } else {
+              startEndAriaText = "end date";
+            }
+            $(this).attr(
+              "aria-label",
+              "Click to select " + startEndAriaText + " of " + monthYearString
+            );
             $(this).data("at-select-date", monthYearString);
             $(this).attr("role", "button");
             $(this).attr("tabindex", "0");
