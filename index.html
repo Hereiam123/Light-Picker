@@ -1,0 +1,40 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="litepicker" />
+    <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/js/main.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      var picker = new Litepicker({
+        element: document.getElementById("litepicker"),
+        numberOfMonths: 2,
+        singleMode: false,
+        minDate: Date.now(),
+        onRender: function() {
+          $(".month-item a").each(function() {
+            var monthName = $(this)
+              .closest(".month-item")
+              .find(".month-item-name")
+              .html();
+            var monthYear = $(this)
+              .closest(".month-item")
+              .find(".month-item-year")
+              .html();
+            var monthYearString =
+              monthName + " " + $(this).text() + " " + monthYear;
+            $(this).attr("aria-label", monthYearString);
+            $(this).attr("tabindex", "0");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
