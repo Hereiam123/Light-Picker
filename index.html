@@ -33,6 +33,7 @@
             var monthYearString =
               monthName + " " + $(this).text() + " " + monthYear;
             $(this).attr("aria-label", "Click to select " + monthYearString);
+            $(this).data("at-select-date", monthYearString);
             $(this).attr("role", "button");
             $(this).attr("tabindex", "0");
             $(this).removeAttr("href");
@@ -42,7 +43,17 @@
               }
             });
             $(this).on("click", function() {
-              $(this)[0].focus();
+              if ($(".is-end-date").length == 0) {
+                $(".is-start-date").focus();
+              } else {
+                var startDate = $(".is-start-date").data("at-select-date");
+                var endDate = $(".is-end-date").data("at-select-date");
+                $(".button-apply").attr(
+                  "aria-label",
+                  "Click to select dates of " + startDate + " to " + endDate
+                );
+                $(".button-apply").focus();
+              }
             });
           });
         }
