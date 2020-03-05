@@ -36,6 +36,15 @@
         margin: 0 !important;
         box-shadow: 0px 4px 5px #ddd !important;
       }
+
+      .litepicker .day-item {
+        border-radius: 50% !important;
+      }
+
+      .litepicker .day-item.in-full-range {
+        border-radius: 50% !important;
+        background-color: red !important;
+      }
     </style>
   </head>
   <body>
@@ -104,6 +113,14 @@
               startEndAriaText = "check in date";
             } else {
               startEndAriaText = "checkout date";
+            }
+            if (
+              $(".is-start-date").length > 0 &&
+              $(".is-end-date").length > 0
+            ) {
+              $(".is-start-date").addClass("in-full-range");
+            } else {
+              $(".is-start-date").removeClass("in-full-range");
             }
             if (!$(this).is(".button-previous-month, .button-next-month")) {
               $(this).attr(
