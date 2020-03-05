@@ -88,7 +88,7 @@
         onRender: function() {
           $(".litepicker").on("keyup", function(e) {
             var allFocusableElementsInCalendar = $(".litepicker").find(
-              'a.day-item:not([disabled]):not(.is-locked), button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])'
+              'a.day-item:not([disabled]):not(.is-locked), button:not([disabled]):not([tabindex="-1"]), .month-item:not(.no-previous-month) button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])'
             );
             var firstFocusableElement = allFocusableElementsInCalendar[0];
             var lastFocusableElement =
@@ -99,15 +99,15 @@
               console.log("Shift tab");
               console.log(firstFocusableElement);
               /* shift + tab */ if ($(firstFocusableElement).is(":focus")) {
-                lastFocusableElement.focus();
                 e.preventDefault();
+                lastFocusableElement.focus();
               }
             } /* tab */ else if (e.keyCode == 9) {
               console.log("tab");
               console.log(lastFocusableElement);
               if ($(lastFocusableElement).is(":focus")) {
-                firstFocusableElement.focus();
                 e.preventDefault();
+                firstFocusableElement.focus();
               }
             }
           });
