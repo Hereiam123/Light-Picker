@@ -72,7 +72,6 @@
         selectForward: true,
         minDays: 1,
         onShow: function() {
-          //$("#litepicker").attr("tabindex", "-1");
           $("#litepicker").attr(
             "aria-label",
             "Hotel dates calendar range picker open."
@@ -80,7 +79,6 @@
           $(".day-item.is-today").focus();
         },
         onHide: function() {
-          //$("#litepicker").removeAttr("tabindex");
           $("#litepicker").attr(
             "aria-label",
             "Click to open hotel dates calendar range picker."
@@ -88,6 +86,31 @@
           $("#litepicker").focus();
         },
         onRender: function() {
+          $(".litepicker").on("keyup", function(e) {
+            var allFocusableElementsInCalendar = $(".litepicker").find(
+              'a.day-item:not([disabled]):not(.is-locked), button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])'
+            );
+            var firstFocusableElement = allFocusableElementsInCalendar[0];
+            var lastFocusableElement =
+              allFocusableElementsInCalendar[
+                allFocusableElementsInCalendar.length - 1
+              ];
+            if (e.shiftKey && e.keyCode == 9) {
+              console.log("Shift tab");
+              console.log(firstFocusableElement);
+              /* shift + tab */ if ($(firstFocusableElement).is(":focus")) {
+                lastFocusableElement.focus();
+                e.preventDefault();
+              }
+            } /* tab */ else if (e.keyCode == 9) {
+              console.log("tab");
+              console.log(lastFocusableElement);
+              if ($(lastFocusableElement).is(":focus")) {
+                firstFocusableElement.focus();
+                e.preventDefault();
+              }
+            }
+          });
           $(".container__months").append(
             "<div><button class='close' aria-label='Close calendar date picker without selecting dates.'> &#10005;</button></div>"
           );
