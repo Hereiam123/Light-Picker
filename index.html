@@ -24,6 +24,9 @@
         display: block !important;
         position: absolute !important;
       }
+      .litepicker.hide {
+        display: none !important;
+      }
       .litepicker .container__months {
         flex-wrap: nowrap !important;
         width: initial !important;
@@ -72,8 +75,6 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      var checkForBodyFocus;
-      var intervalId;
       var picker = new Litepicker({
         element: document.getElementById("litepicker"),
         numberOfMonths: 2,
@@ -84,39 +85,6 @@
         autoApply: false,
         selectForward: true,
         minDays: 1,
-        onShow: function() {
-          $("#litepicker").attr(
-            "aria-label",
-            "Hotel dates calendar range picker open."
-          );
-          $(".day-item.is-today").focus();
-
-          if (typeof checkForBodyFocus !== "undefined") {
-            clearInterval(checkForBodyFocus);
-          }
-          checkForBodyFocus = setInterval(function() {
-            var activeElement = document.activeElement;
-            var pageContent = document.getElementsByClassName("page-content");
-            pageContent = pageContent[0];
-            if (pageContent.contains(activeElement)) {
-              $("body").blur();
-            }
-          }, 50);
-
-          $(".page-content").attr("tabindex", "-1");
-          $(".page-content").attr("aria-hidden", "true");
-        },
-        onHide: function() {
-          clearInterval(checkForBodyFocus);
-          //$(".litepicker").off("keyup");
-          $(".page-content").removeAttr("tabindex");
-          $(".page-content").removeAttr("aria-hidden");
-          $("#litepicker").attr(
-            "aria-label",
-            "Click to open hotel dates calendar range picker."
-          );
-          $("#litepicker").focus();
-        },
         onRender: function() {
           $(".litepicker").on("keyup", function(e) {
             var allFocusableElementsInCalendar = $(".litepicker").find(
@@ -228,16 +196,79 @@
           });
         }
       });
-      $("#litepicker").on("keyup", function(e) {
-        if (e.keyCode === 13) {
-          picker.show();
+
+      //Add litepicker show/hide functionality
+      $(".litepicker").addClass("hide");
+      $("#litepicker").on("click", function() {
+        if ($(".litepicker").hasClass("hide")) {
+          showLitePicker();
+        } else {
+          hideLitePicker();
         }
       });
+
+      $("#litepicker").on("keyup", function(e) {
+        if (e.keyCode == 13) {
+          if ($(".litepicker").hasClass("hide")) {
+            showLitePicker();
+          } else {
+            hideLitePicker();
+          }
+        }
+      });
+
       $(".litepicker").on("focusout", function(e) {
         if (!$(this).has(e.target)) {
-          picker.hide();
+          hideLitePicker();
         }
       });
+
+      $(document).on("click", function(e) {
+        if (e.target.className.indexOf("button-apply") !== -1) {
+          hideLitePicker();
+        }
+        if (e.target.className.indexOf("close") !== -1) {
+          hideLitePicker();
+        }
+      });
+
+      var checkForBodyFocus;
+      var intervalId;
+      function showLitePicker() {
+        $(".litepicker").removeClass("hide");
+        $("#litepicker").attr(
+          "aria-label",
+          "Hotel dates calendar range picker open."
+        );
+        $(".day-item.is-today").focus();
+
+        if (typeof checkForBodyFocus !== "undefined") {
+          clearInterval(checkForBodyFocus);
+        }
+        checkForBodyFocus = setInterval(function() {
+          var activeElement = document.activeElement;
+          var pageContent = document.getElementsByClassName("page-content");
+          pageContent = pageContent[0];
+          if (pageContent.contains(activeElement)) {
+            $("body").blur();
+          }
+        }, 50);
+
+        $(".page-content").attr("tabindex", "-1");
+        $(".page-content").attr("aria-hidden", "true");
+      }
+
+      function hideLitePicker() {
+        $(".litepicker").addClass("hide");
+        clearInterval(checkForBodyFocus);
+        $(".page-content").removeAttr("tabindex");
+        $(".page-content").removeAttr("aria-hidden");
+        $("#litepicker").attr(
+          "aria-label",
+          "Click to open hotel dates calendar range picker."
+        );
+        $("#litepicker").focus();
+      }
     </script>
   </body>
 </html>
