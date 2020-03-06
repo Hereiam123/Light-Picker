@@ -81,19 +81,21 @@
             "Hotel dates calendar range picker open."
           );
           $(".day-item.is-today").focus();
-          $("body").on("focus", function() {
+          $(".page-content").on("focus", function() {
             $(this).blur();
           });
           $(".page-content").attr("tabindex", "-1");
           $(".page-content").attr("aria-hidden", "true");
         },
         onHide: function() {
-          $("body").off("focus");
+          $(".page-content").off("focus");
           $("#litepicker").attr(
             "aria-label",
             "Click to open hotel dates calendar range picker."
           );
           $("#litepicker").focus();
+          $(".page-content").removeAttr("tabindex");
+          $(".page-content").removeAttr("aria-hidden");
           alert("Modal closed!");
         },
         onRender: function() {
