@@ -66,6 +66,8 @@
       crossorigin="anonymous"
     ></script>
     <script>
+      var checkForBodyFocus;
+      var intervalId;
       var picker = new Litepicker({
         element: document.getElementById("litepicker"),
         numberOfMonths: 2,
@@ -81,13 +83,23 @@
             "Hotel dates calendar range picker open."
           );
           $(".day-item.is-today").focus();
-          $(".page-content").on("focus", function() {
-            $(this).blur();
-          });
+          if (typeof checkForBodyFocus !== "undefined") {
+            clearInterval(checkForBodyFocus);
+          }
+          checkForBodyFocus = setInterval(function() {
+            var activeElement = document.activeElement;
+            var pageContent = document.getElementsByClassName("page-content");
+            pageContent = pageContent[0];
+            if (pageContent.contains(activeElement)) {
+              $("body").blur();
+            }
+          }, 50);
+          console.log(checkForBodyFocus);
           $(".page-content").attr("tabindex", "-1");
           $(".page-content").attr("aria-hidden", "true");
         },
         onHide: function() {
+          clearInterval(checkForBodyFocus);
           $(".page-content").off("focus");
           $("#litepicker").attr(
             "aria-label",
@@ -99,7 +111,7 @@
           alert("Modal closed!");
         },
         onRender: function() {
-          /*$(".litepicker").on("keyup", function(e) {
+          $(".litepicker").on("keyup", function(e) {
             var allFocusableElementsInCalendar = $(".litepicker").find(
               'a.day-item:not([disabled]):not(.is-locked), button:not([disabled]):not([tabindex="-1"]), .month-item:not(.no-previous-month) button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])'
             );
@@ -119,7 +131,7 @@
                 firstFocusableElement.focus();
               }
             }
-          });*/
+          });
           $(".container__months").append(
             "<div><button class='close' aria-label='Close calendar date picker without selecting dates.'> &#10005;</button></div>"
           );
