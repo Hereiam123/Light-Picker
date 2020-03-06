@@ -62,6 +62,22 @@
       crossorigin="anonymous"
     ></script>
     <script>
+      function setVoiceOverFocus(element) {
+        var focusInterval = 10; // ms, time between function calls
+        var focusTotalRepetitions = 10; // number of repetitions
+
+        element.setAttribute("tabindex", "0");
+        element.blur();
+
+        var focusRepetitions = 0;
+        var interval = window.setInterval(function() {
+          element.focus();
+          focusRepetitions++;
+          if (focusRepetitions >= focusTotalRepetitions) {
+            window.clearInterval(interval);
+          }
+        }, focusInterval);
+      }
       var picker = new Litepicker({
         element: document.getElementById("litepicker"),
         numberOfMonths: 2,
@@ -101,6 +117,7 @@
               /* shift + tab */ if ($(firstFocusableElement).is(":focus")) {
                 e.preventDefault();
                 lastFocusableElement.focus();
+                setVoiceOverFocus(lastFocusableElement);
               }
             } /* tab */ else if (e.keyCode == 9) {
               console.log("tab");
@@ -108,6 +125,7 @@
               if ($(lastFocusableElement).is(":focus")) {
                 e.preventDefault();
                 firstFocusableElement.focus();
+                setVoiceOverFocus(firstFocusableElement);
               }
             }
           });
