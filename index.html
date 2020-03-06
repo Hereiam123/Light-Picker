@@ -91,6 +91,7 @@
             var pageContent = document.getElementsByClassName("page-content");
             pageContent = pageContent[0];
             if (pageContent.contains(activeElement)) {
+              console.log("A focus!");
               $("body").blur();
             }
           }, 50);
