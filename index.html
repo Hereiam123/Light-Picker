@@ -20,6 +20,10 @@
       .preview-date-range {
         display: none;
       }
+      .litepicker {
+        display: block !important;
+        position: absolute !important;
+      }
       .litepicker .container__months {
         flex-wrap: nowrap !important;
         width: initial !important;
@@ -50,13 +54,15 @@
   <body>
     <div class="page-content">
       <span>Fishy!</span>
-      <input
-        type="text"
-        id="litepicker"
-        readonly
-        placeholder="Click to Choose Hotel Dates"
-        aria-label="Click to open hotel dates calendar range picker."
-      />
+      <div class="at-calendar-container">
+        <input
+          type="text"
+          id="litepicker"
+          readonly
+          placeholder="Click to Choose Hotel Dates"
+          aria-label="Click to open hotel dates calendar range picker."
+        />
+      </div>
       <span>Fishy 2!</span>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/js/main.js"></script>
@@ -74,6 +80,7 @@
         singleMode: false,
         minDate: Date.now(),
         mobileFriendly: false,
+        inlineMode: true,
         autoApply: false,
         selectForward: true,
         minDays: 1,
@@ -132,14 +139,14 @@
               }
             }
           });
-          $(".container__months").append(
-            "<div><button class='close' aria-label='Close calendar date picker without selecting dates.'> &#10005;</button></div>"
+          /*$(".container__months").append(
+            "<div><input type='text'/><input type='text'/><button class='close' aria-label='Close calendar date picker without selecting dates.'> &#10005;</button></div>"
           );
           $(".container__months")
             .find(".close")
             .on("click", function() {
               $(".button-cancel").click();
-            });
+            });*/
           $(".month-item-weekdays-row").attr("aria-hidden", "true");
           $(".month-item a").each(function() {
             var monthName = $(this)
