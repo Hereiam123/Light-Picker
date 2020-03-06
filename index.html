@@ -156,6 +156,10 @@
             if ($(".is-start-date.is-locked").length == 0) {
               startEndAriaText = "check in date";
             } else {
+              $(".day-item")
+                .not(".is-locked")
+                .last()
+                .focus();
               startEndAriaText = "checkout date";
             }
             if (
