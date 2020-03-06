@@ -97,7 +97,7 @@
           alert("Modal closed!");
         },
         onRender: function() {
-          $(".litepicker").on("keyup", function(e) {
+          /*$(".litepicker").on("keyup", function(e) {
             var allFocusableElementsInCalendar = $(".litepicker").find(
               'a.day-item:not([disabled]):not(.is-locked), button:not([disabled]):not([tabindex="-1"]), .month-item:not(.no-previous-month) button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])'
             );
@@ -107,17 +107,17 @@
                 allFocusableElementsInCalendar.length - 1
               ];
             if (e.shiftKey && e.keyCode == 9) {
-              /* shift + tab */ if ($(firstFocusableElement).is(":focus")) {
+              if ($(firstFocusableElement).is(":focus")) {
                 e.preventDefault();
                 lastFocusableElement.focus();
               }
-            } /* tab */ else if (e.keyCode == 9) {
+            } else if (e.keyCode == 9) {
               if ($(lastFocusableElement).is(":focus")) {
                 e.preventDefault();
                 firstFocusableElement.focus();
               }
             }
-          });
+          });*/
           $(".container__months").append(
             "<div><button class='close' aria-label='Close calendar date picker without selecting dates.'> &#10005;</button></div>"
           );
