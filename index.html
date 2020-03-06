@@ -83,6 +83,7 @@
             "Hotel dates calendar range picker open."
           );
           $(".day-item.is-today").focus();
+
           if (typeof checkForBodyFocus !== "undefined") {
             clearInterval(checkForBodyFocus);
           }
@@ -91,28 +92,26 @@
             var pageContent = document.getElementsByClassName("page-content");
             pageContent = pageContent[0];
             if (pageContent.contains(activeElement)) {
-              console.log("A focus!");
               $("body").blur();
             }
           }, 50);
-          console.log(checkForBodyFocus);
+
           $(".page-content").attr("tabindex", "-1");
           $(".page-content").attr("aria-hidden", "true");
         },
         onHide: function() {
           clearInterval(checkForBodyFocus);
-          $(".page-content").off("focus");
+          $(".litepicker").off("keyup");
+          $(".page-content").removeAttr("tabindex");
+          $(".page-content").removeAttr("aria-hidden");
           $("#litepicker").attr(
             "aria-label",
             "Click to open hotel dates calendar range picker."
           );
           $("#litepicker").focus();
-          $(".page-content").removeAttr("tabindex");
-          $(".page-content").removeAttr("aria-hidden");
-          alert("Modal closed!");
         },
         onRender: function() {
-          $(".litepicker").on("keyup", function(e) {
+          /*$(".litepicker").on("keyup", function(e) {
             var allFocusableElementsInCalendar = $(".litepicker").find(
               'a.day-item:not([disabled]):not(.is-locked), button:not([disabled]):not([tabindex="-1"]), .month-item:not(.no-previous-month) button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])'
             );
@@ -132,7 +131,7 @@
                 firstFocusableElement.focus();
               }
             }
-          });
+          });*/
           $(".container__months").append(
             "<div><button class='close' aria-label='Close calendar date picker without selecting dates.'> &#10005;</button></div>"
           );
