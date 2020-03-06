@@ -48,13 +48,15 @@
     </style>
   </head>
   <body>
-    <input
-      type="text"
-      id="litepicker"
-      readonly
-      placeholder="Click to Choose Hotel Dates"
-      aria-label="Click to open hotel dates calendar range picker."
-    />
+    <div class="page-content">
+      <input
+        type="text"
+        id="litepicker"
+        readonly
+        placeholder="Click to Choose Hotel Dates"
+        aria-label="Click to open hotel dates calendar range picker."
+      />
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/js/main.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -77,8 +79,14 @@
             "Hotel dates calendar range picker open."
           );
           $(".day-item.is-today").focus();
+          $("body").on("focus", function() {
+            $(this).blur();
+          });
+          $(".page-content").attr("tabindex", "-1");
+          $(".page-content").attr("aria-hidden", "true");
         },
         onHide: function() {
+          $("body").off("focus");
           $("#litepicker").attr(
             "aria-label",
             "Click to open hotel dates calendar range picker."
